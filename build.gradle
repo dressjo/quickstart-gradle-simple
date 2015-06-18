@@ -1,0 +1,97 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.5
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    
+    println "Printing the dependencies"
+    println configurations.compile.allDependencies.each { println "${it.name}" }
+    println configurations['compile'].name
+    
+    // print property if passed
+    if (project.hasProperty('fuckface')) {
+      println fuckface
+    }
+    
+}
+
+task copyFiles(type: Copy) {
+    // Copy everything under src/main/webapp
+    from 'src/main/java'
+    // Copy a single file
+    //from 'src/staging/index.html'
+    // Copy the output of a task
+    //from copyTask
+    // Copy the output of a task using Task outputs explicitly.
+    //from copyTaskWithPatterns.outputs
+    // Copy the contents of a Zip file
+    //from zipTree('src/main/assets.zip')
+    // Determine the destination directory later
+    
+    //fileTree(dir: 'fromLib', include: '**/*.java')
+    from fileTree(dir: 'fromLib')
+    
+    into { "toLib" }
+}
+
+
+task myzip(type: Zip, dependsOn : copyFiles) {
+    from 'toLib'
+    into '/'
+    baseName = 'zip1'
+}
+
+task myzip2(type: Zip, dependsOn : copyFiles) {
+    from 'toLib'
+    into '/'
+    baseName = 'zip2'
+}
+
+def ziptasks = [
+   [name: "myzip"]
+]
+
+//ziptasks.each { comp ->
+//   project.task(comp.name, type: Jar)
+//}
+
+
+artifacts {
+    //ziptasks.each { archives(tasks[it.name]) }
+    archives(tasks["myzip"])
+    archives(tasks["myzip2"])
+}
+
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+
+
+
+
