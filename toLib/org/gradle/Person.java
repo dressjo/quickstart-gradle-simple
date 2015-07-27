@@ -2,6 +2,12 @@ package org.gradle;
 
 import org.apache.commons.collections.list.GrowthList;
 
+/**
+ * @author Lenovo
+ * 
+ * Person class
+ *
+ */
 public class Person {
     private final String name;
 
