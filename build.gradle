@@ -30,6 +30,8 @@ dependencies {
     if (project.hasProperty('fuckface')) {
       println fuckface
     }
+	
+	println "${fuckface} in the house"
     
 }
 
@@ -53,14 +55,34 @@ task copyFiles(type: Copy) {
 }
 
 
+test { 
+	classpath.each {
+		println "Letter ${it}"
+	}
+	
+	classpath = classpath.plus(files(new File('kuk.jar')))
+	
+	classpath.each {
+		println "ADDED KUK ${it}"
+	}
+	
+	classpath = classpath.filter { file -> file.getPath().endsWith("kuk.jar") }
+	
+	classpath.each {
+		println "Filtered KUK ${it}"
+	}
+	
+	
+}
+
 task myzip(type: Zip, dependsOn : copyFiles) {
-    from 'toLib'
+    from 'slutLib'
     into '/'
     baseName = 'zip1'
 }
 
 task myzip2(type: Zip, dependsOn : copyFiles) {
-    from 'toLib'
+    from 'slutLib'
     into '/'
     baseName = 'zip2'
 }
@@ -93,7 +115,9 @@ uploadArchives {
     }
 }
 
-
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.7'
+}
 
 
 
