@@ -63,13 +63,13 @@ test {
 	classpath = classpath.plus(files(new File('kuk.jar')))
 	
 	classpath.each {
-		println "ADDED KUK ${it}"
+		println "ADDED ${it}"
 	}
 	
 	classpath = classpath.filter { file -> file.getPath().endsWith("kuk.jar") }
 	
 	classpath.each {
-		println "Filtered KUK ${it}"
+		println "Filtered ${it}"
 	}
 	
 	
